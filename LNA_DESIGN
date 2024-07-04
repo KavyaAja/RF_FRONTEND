@@ -1,0 +1,42 @@
+`include "disciplines.vams"
+
+module amplifier(vin, vout, vdd, gnd);
+  input vin, vdd, gnd;
+  output vout;
+
+  electrical vin, vout, vdd, gnd;
+
+  // Define the parameters
+  parameter real R0 = 1k;
+  parameter real R1 = 1k;
+  parameter real Cblock = 1u;
+  parameter real LG = 1u;
+  parameter real LS = 1u;
+  parameter real LD = 1u;
+  parameter real CD = 1u;
+
+  // Define the nodes
+  electrical n1, n2, n3, n4;
+
+  // Define the transistors
+  transistor m0, m1, m2;
+
+  // Assign the transistors
+  m0 (n2, vin, gnd);
+  m1 (vout, n2, n1);
+  m2 (n3, n2, gnd);
+
+  // Define the resistors
+  resistor r0 (vdd, n1) r=R0;
+  resistor r1 (n2, n3) r=R1;
+
+  // Define the inductors
+  inductor lg (vin, n2) l=LG;
+  inductor ls (n2, gnd) l=LS;
+  inductor ld (vdd, n1) l=LD;
+
+  // Define the capacitors
+  capacitor cblock (vin, n2) c=Cblock;
+  capacitor cd (vout, vdd) c=CD;
+
+endmodule
